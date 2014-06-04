@@ -54,7 +54,7 @@ namespace IdentitySample.Controllers
         // GET: /Users/
         public async Task<ActionResult> Index()
         {
-            return View(await UserManager.Users.ToListAsync());
+            return View(UserManager.Users.ToList());
         }
 
         //
@@ -77,7 +77,7 @@ namespace IdentitySample.Controllers
         public async Task<ActionResult> Create()
         {
             //Get the list of Roles
-            ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+            ViewBag.RoleId = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
             return View();
         }
 
@@ -100,7 +100,7 @@ namespace IdentitySample.Controllers
                         if (!result.Succeeded)
                         {
                             ModelState.AddModelError("", result.Errors.First());
-                            ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                            ViewBag.RoleId = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
                             return View();
                         }
                     }
