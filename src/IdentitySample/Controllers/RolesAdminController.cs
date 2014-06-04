@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using AspNet.Identity.MongoDB;
 
 namespace IdentitySample.Controllers
 {
