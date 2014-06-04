@@ -6,7 +6,6 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
 using AspNet.Identity.MongoDB;
