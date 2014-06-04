@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AspNet.Identity.MongoDB;
+using Microsoft.AspNet.Identity;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
