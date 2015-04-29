@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using AspNet.Identity.MongoDB;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace IdentitySample.Controllers
 {
@@ -25,7 +27,15 @@ namespace IdentitySample.Controllers
             RoleManager = roleManager;
         }
 
-        private ApplicationUserManager _userManager;
+		public ApplicationIdentityContext IdentityContext
+		{
+			get
+			{
+				return HttpContext.GetOwinContext().GetUserManager<ApplicationIdentityContext>();
+			}
+		}
+
+		private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
             get
@@ -53,9 +63,10 @@ namespace IdentitySample.Controllers
 
         //
         // GET: /Roles/
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(RoleManager.Roles);
+	        var roles = await IdentityContext.AllRolesAsync();
+            return View(roles);
         }
 
         //
@@ -67,17 +78,9 @@ namespace IdentitySample.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var role = await RoleManager.FindByIdAsync(id);
-            // Get the list of Users in this Role
-            var users = new List<ApplicationUser>();
 
             // Get the list of Users in this Role
-            foreach (var user in UserManager.Users.ToList())
-            {
-                if (await UserManager.IsInRoleAsync(user.Id, role.Name))
-                {
-                    users.Add(user);
-                }
-            }
+	        var users = await IdentityContext.Users.Find(u => u.Roles.Contains(role.Name)).ToListAsync();
 
             ViewBag.Users = users;
             ViewBag.UserCount = users.Count();

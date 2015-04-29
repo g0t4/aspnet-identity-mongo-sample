@@ -1,6 +1,8 @@
 ﻿namespace IdentitySample
 {
 	using System;
+	using System.Collections.Generic;
+	using System.Threading.Tasks;
 	using AspNet.Identity.MongoDB;
 	using Models;
 	using MongoDB.Driver;
@@ -26,6 +28,11 @@
 		public IMongoCollection<IdentityRole> Roles { get; set; }
 
 		public IMongoCollection<ApplicationUser> Users { get; set; }
+
+		public Task<List<IdentityRole>> AllRolesAsync()
+		{
+			return Roles.Find(r => true).ToListAsync();
+		}
 
 		public void Dispose()
 		{

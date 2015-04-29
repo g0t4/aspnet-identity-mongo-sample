@@ -1,8 +1,8 @@
 ﻿using IdentitySample.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,7 +24,15 @@ namespace IdentitySample.Controllers
             RoleManager = roleManager;
         }
 
-        private ApplicationUserManager _userManager;
+		public ApplicationIdentityContext  IdentityContext
+		{
+			get
+			{
+				return HttpContext.GetOwinContext().GetUserManager<ApplicationIdentityContext>();
+			}
+		}
+
+		private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
             get
@@ -54,7 +62,8 @@ namespace IdentitySample.Controllers
         // GET: /Users/
         public async Task<ActionResult> Index()
         {
-            return View(UserManager.Users.ToList());
+	        var users = await IdentityContext.Users.Find(u => true).ToListAsync();
+            return View(users);
         }
 
         //
@@ -76,8 +85,8 @@ namespace IdentitySample.Controllers
         // GET: /Users/Create
         public async Task<ActionResult> Create()
         {
-            //Get the list of Roles
-            ViewBag.RoleId = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
+	        var roles = await IdentityContext.AllRolesAsync();
+            ViewBag.RoleId = new SelectList(roles, "Name", "Name");
             return View();
         }
 
@@ -86,7 +95,8 @@ namespace IdentitySample.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(RegisterViewModel userViewModel, params string[] selectedRoles)
         {
-            if (ModelState.IsValid)
+			var roles = await IdentityContext.AllRolesAsync();
+			if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email };
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
@@ -100,7 +110,7 @@ namespace IdentitySample.Controllers
                         if (!result.Succeeded)
                         {
                             ModelState.AddModelError("", result.Errors.First());
-                            ViewBag.RoleId = new SelectList(RoleManager.Roles.ToList(), "Name", "Name");
+							ViewBag.RoleId = new SelectList(roles, "Name", "Name");
                             return View();
                         }
                     }
@@ -108,13 +118,13 @@ namespace IdentitySample.Controllers
                 else
                 {
                     ModelState.AddModelError("", adminresult.Errors.First());
-                    ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+                    ViewBag.RoleId = new SelectList(roles, "Name", "Name");
                     return View();
 
                 }
                 return RedirectToAction("Index");
             }
-            ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+            ViewBag.RoleId = new SelectList(roles, "Name", "Name");
             return View();
         }
 
@@ -134,11 +144,12 @@ namespace IdentitySample.Controllers
 
             var userRoles = await UserManager.GetRolesAsync(user.Id);
 
-            return View(new EditUserViewModel()
+			var roles = await IdentityContext.AllRolesAsync();
+			return View(new EditUserViewModel()
             {
                 Id = user.Id,
                 Email = user.Email,
-                RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+                RolesList = roles.Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
                     Text = x.Name,
