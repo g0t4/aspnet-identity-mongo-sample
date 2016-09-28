@@ -12,7 +12,9 @@ using AspNetCore.WebApp.MongoDB.Services;
 
 namespace AspNetCore.WebApp.MongoDB.Controllers
 {
-    [Authorize]
+	using Microsoft.AspNetCore.Identity.MongoDB;
+
+	[Authorize]
     public class ManageController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
