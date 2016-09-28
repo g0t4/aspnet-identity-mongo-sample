@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59604F8D-3B59-4CC5-A6A6-ADF841E6C545}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D5FD2AA-0AD2-415E-A834-5AB20A574EAC}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNetCore.WebApp.MongoDB", "src\AspNetCore.WebApp.MongoDB\AspNetCore.WebApp.MongoDB.xproj", "{E5CF1DA3-383A-40B5-8B2E-F59D2CD737A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5CF1DA3-383A-40B5-8B2E-F59D2CD737A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CF1DA3-383A-40B5-8B2E-F59D2CD737A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CF1DA3-383A-40B5-8B2E-F59D2CD737A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CF1DA3-383A-40B5-8B2E-F59D2CD737A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5CF1DA3-383A-40B5-8B2E-F59D2CD737A9} = {59604F8D-3B59-4CC5-A6A6-ADF841E6C545}
+	EndGlobalSection
+EndGlobal
